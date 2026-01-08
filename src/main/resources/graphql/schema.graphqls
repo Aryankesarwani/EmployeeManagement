@@ -1,0 +1,27 @@
+type Employee{
+    id:ID!
+    name:String
+    email:String
+    phone:String
+    address:String
+    designation:String
+    CTC:Float
+}
+
+input EmployeeDTO{
+    name:String
+    email:String
+    phone:String
+    address:String
+    designation:String
+    CTC:Float
+}
+
+type Query{
+    get(id:ID!):Employee
+}
+type Mutation{
+    addEmployee(employeeDTO : EmployeeDTO) : Employee
+    updateEmployee(id:ID!,employeeDTO:EmployeeDTO) : Employee
+    deleteEmployee(id:ID!):String
+}
