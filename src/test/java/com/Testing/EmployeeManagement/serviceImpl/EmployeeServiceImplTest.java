@@ -6,11 +6,13 @@ import com.Testing.EmployeeManagement.Exception.ResourceNotFoundException;
 import com.Testing.EmployeeManagement.repository.EmployeeRepo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.assertj.core.util.Strings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
@@ -41,7 +43,14 @@ public class EmployeeServiceImplTest {
     EmployeeServiceImpl employeeServiceImpl;
 
     public static Stream<Arguments> updateEmployee() {
-        return Stream.of(Arguments.of(1L,new EmployeeDTO("Mohit","mohit_sahu@gmail.com","3245675432","Bangaluru","Back-End Developer",12.9)));
+        EmployeeDTO dto = new EmployeeDTO();
+        dto.setName("Mohit");
+        dto.setEmail("mohit_sahu@gmail.com");
+        dto.setPhone("3245675432");
+        dto.setAddress("Bangaluru");
+        dto.setDesignation("Back-End Developer");
+        dto.setCTC(12.9F);
+        return Stream.of(Arguments.of("1L", dto));
     }
 
     @BeforeEach
@@ -50,16 +59,16 @@ public class EmployeeServiceImplTest {
         employee.setName("Aryan Kesarwani");
         employee.setEmail("aryan_kesarwani@gmail.com");
         employee.setAddress("Bangalore");
-        employee.setPhone("999999999");
-        employee.setCTC(7.8);
+        employee.setPhone("123456789");
+        employee.setCTC(7.8F);
         employee.setDesignation("Back-End Developer");
 
         employeeDTO = new EmployeeDTO();
         employeeDTO.setName("Aryan Kesarwani");
         employeeDTO.setEmail("aryan_kesarwani@gmail.com");
         employeeDTO.setAddress("Bangalore");
-        employeeDTO.setPhone("999999999");
-        employeeDTO.setCTC(7.8);
+        employeeDTO.setPhone("123456789");
+        employeeDTO.setCTC(7.8F);
         employeeDTO.setDesignation("Back-End Developer");
     }
 
@@ -70,17 +79,17 @@ public class EmployeeServiceImplTest {
         savedEmployeeDTO.setName("Aryan Kesarwani");
         savedEmployeeDTO.setEmail("aryan_kesarwani@gmail.com");
         savedEmployeeDTO.setAddress("Bangalore");
-        savedEmployeeDTO.setPhone("999999999");
-        savedEmployeeDTO.setCTC(7.8);
+        savedEmployeeDTO.setPhone("123456789");
+        savedEmployeeDTO.setCTC(7.8F);
         savedEmployeeDTO.setDesignation("Back-End Developer");
 
         Employee savedEmployee = new Employee();
-        savedEmployee.setId(1L);
+        savedEmployee.setId("1L");
         savedEmployee.setName("Aryan Kesarwani");
         savedEmployee.setEmail("aryan_kesarwani@gmail.com");
         savedEmployee.setAddress("Bangalore");
-        savedEmployee.setPhone("999999999");
-        savedEmployee.setCTC(7.8);
+        savedEmployee.setPhone("123456789");
+        savedEmployee.setCTC(7.8F);
         savedEmployee.setDesignation("Back-End Developer");
 
 
@@ -99,7 +108,7 @@ public class EmployeeServiceImplTest {
 
     @ParameterizedTest
     @MethodSource("updateEmployee")
-    void updateEmployeeTest(Long id,EmployeeDTO employeeDTO) throws ResourceNotFoundException {
+    void updateEmployeeTest(String id,EmployeeDTO employeeDTO) throws ResourceNotFoundException {
 
         this.employeeDTO = employeeDTO;
         Mockito.when(employeeRepo.findById(id)).thenReturn(Optional.of(employee));
@@ -140,8 +149,8 @@ public class EmployeeServiceImplTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {1L})
-    void getEmployeeTest(long id) throws ResourceNotFoundException{
+    @CsvSource("1L")
+    void getEmployeeTest(String id) throws ResourceNotFoundException{
         Mockito.when(employeeRepo.findById(id)).thenReturn(Optional.of(employee));
         Employee result = employeeServiceImpl.getEmployee(id);
 
@@ -152,8 +161,9 @@ public class EmployeeServiceImplTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {1L})
-    void deleteEmployee(long id){
+    @CsvSource("1L")
+    void deleteEmployeeTest(String id) throws ResourceNotFoundException {
+        Mockito.when(employeeRepo.findById(id)).thenReturn(Optional.of(employee));
         employeeServiceImpl.deleteEmployee(id);
         Mockito.verify(employeeRepo).deleteById(id);
     }

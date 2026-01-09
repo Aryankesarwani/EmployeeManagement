@@ -10,9 +10,9 @@ public interface EmployeeService {
 
     Employee registerEmployee(EmployeeDTO employeeDTO);
 
-    Employee updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException;
+    Employee updateEmployee(String id, EmployeeDTO employeeDTO) throws ResourceNotFoundException;
 
-    Employee getEmployee(Long id) throws ResourceNotFoundException;
+    Employee getEmployee(String id) throws ResourceNotFoundException;
 
-    String deleteEmployee(Long id);
+    String deleteEmployee(String id) throws ResourceNotFoundException;
 }

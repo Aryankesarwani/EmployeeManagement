@@ -25,8 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException {
-        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee Not Found"));
+    public Employee updateEmployee(String id, EmployeeDTO employeeDTO) throws ResourceNotFoundException {
+        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not Found Id :"+id));
         modelMapper.map(employeeDTO,employee);
         Employee updatedEmployee = employeeRepo.save(employee);
         return updatedEmployee;
@@ -34,13 +34,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployee(Long id) throws ResourceNotFoundException {
-        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee Not Found"));
+    public Employee getEmployee(String id) throws ResourceNotFoundException {
+        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not Found Id :"+id));
         return employee;
     }
 
     @Override
-    public String deleteEmployee(Long id) {
+    public String deleteEmployee(String id) throws ResourceNotFoundException{
+        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not Found Id :"+id));
         employeeRepo.deleteById(id);
         return "Employee with id : " + id +" deleted Successfully...";
     }
