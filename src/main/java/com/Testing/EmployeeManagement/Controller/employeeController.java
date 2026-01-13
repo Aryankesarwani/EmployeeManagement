@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,11 +19,14 @@ public class employeeController {
     EmployeeService employeeService;
 
     @PostMapping("register/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Object> registerEmployee(@RequestBody EmployeeDTO employeeDTO){
 
         return new ResponseEntity<>(employeeService.registerEmployee(employeeDTO), HttpStatus.CREATED);
     }
+    
     @PutMapping("update/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Object> updateEmployee(@PathVariable String id, @RequestBody EmployeeDTO employeeDTO) throws ResourceNotFoundException {
         try {
             return new ResponseEntity<>(employeeService.updateEmployee(id, employeeDTO), HttpStatus.ACCEPTED);
@@ -33,6 +37,7 @@ public class employeeController {
     }
 
     @GetMapping("get/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MANAGER')")
     public ResponseEntity<Object> getEmployee(@PathVariable String id) {
         try{
 
@@ -44,6 +49,7 @@ public class employeeController {
     }
 
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteEmployee(@PathVariable String id) throws ResourceNotFoundException{
         try{
             return new ResponseEntity<>(employeeService.deleteEmployee(id),HttpStatus.ACCEPTED);
