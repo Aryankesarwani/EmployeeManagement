@@ -5,6 +5,8 @@ import com.GraphQL.EmployeeManagementGraphQL.Entity.Employee;
 import com.GraphQL.EmployeeManagementGraphQL.Exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface EmployeeService {
 
@@ -15,4 +17,6 @@ public interface EmployeeService {
     Employee getEmployee(String id) throws ResourceNotFoundException;
 
     String deleteEmployee(String id);
+
+    List<Employee> getAllEmployee();
 }

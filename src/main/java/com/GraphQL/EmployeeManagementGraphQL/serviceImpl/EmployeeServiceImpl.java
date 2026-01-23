@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -19,10 +21,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee registerEmployee(EmployeeDTO employeeDTO) {
-        System.out.println("I am in ServiceImpl");
         Employee employee = modelMapper.map(employeeDTO,Employee.class);
         Employee savedEmployee = employeeRepo.save(employee);
-        System.out.println(employeeDTO.getName());
         return savedEmployee;
     }
 
@@ -45,5 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String deleteEmployee(String id) {
         employeeRepo.deleteById(id);
         return "Employee with id : " + id +" deleted Successfully...";
+    }
+
+    @Override
+    public List<Employee> getAllEmployee() {
+        return employeeRepo.findAll();
     }
 }

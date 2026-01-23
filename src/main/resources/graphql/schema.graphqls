@@ -19,6 +19,7 @@ input EmployeeDTO{
 
 type Query{
     get(id:ID!):Employee
+    getAll:[Employee]
 }
 type Mutation{
     addEmployee(employeeDTO : EmployeeDTO) : Employee

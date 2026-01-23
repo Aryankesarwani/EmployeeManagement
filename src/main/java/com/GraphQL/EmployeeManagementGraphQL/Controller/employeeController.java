@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class employeeController {
     @Autowired
@@ -17,9 +19,7 @@ public class employeeController {
 
     @MutationMapping("addEmployee")
     public Employee registerEmployee(@Argument EmployeeDTO employeeDTO){
-        System.out.println("I am in Controller");
         Employee employee = employeeService.registerEmployee(employeeDTO);
-        System.out.println(employee.getName());
         return employee;
     }
 
@@ -31,6 +31,10 @@ public class employeeController {
     @QueryMapping("get")
     public Employee getEmployee(@Argument String id) throws ResourceNotFoundException {
         return employeeService.getEmployee(id);
+    }
+    @QueryMapping("getAll")
+    public List<Employee> getAllEmployee(){
+        return employeeService.getAllEmployee();
     }
 
     @MutationMapping("deleteEmployee")
